@@ -1,35 +1,27 @@
 package diagnostics
 
 import (
-	"strings"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
 	"testing"
 )
 
-var _ = Describe("Assert String", func() {
+var _ = Describe("Assert String is not empty", func() {
 	var (
-		emptyString                 string
-		whitespace                  string
-		testValueName               string
-		testValueNameWithWhitespace string
-		testMessage                 string
-		testMessageWithWhitespace   string
+		emptyString   string
+		testValueName string
+		testMessage   string
 	)
 
 	BeforeEach(func() {
 		emptyString = ""
-		whitespace = "    "
-		testValueName = "Test Value without whitepsace"
-		testValueNameWithWhitespace = "     Test Value with whitspace   "
-		testMessage = "Test Message without whitespace"
-		testMessageWithWhitespace = "     Test Message with whitspace   "
+		testValueName = "Test Value"
+		testMessage = "Test Message"
 	})
 
 	Describe("when empty string value provided", func() {
-		Context("with value name and message both empty", func() {
+		Context("with value name and message both emptyd", func() {
 			It("Should panic with empty string as message", func() {
 				defer func() {
 					if r := recover(); r == nil {
@@ -43,93 +35,177 @@ var _ = Describe("Assert String", func() {
 			})
 		})
 
-		Context("with value name only provided", func() {
-			Context("with value name contains no whitespace", func() {
-				It("Should panic with provided value as message", func() {
-					defer func() {
-						if r := recover(); r == nil {
-							Fail("Should have paniced with provided value as message!!!")
-						} else if r != testValueName {
-							Fail("Should have paniced with provided value as message!!!")
-						}
-					}()
+		Context("with value name provided", func() {
+			It("Should panic with provided value name as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with value name as message!!!")
+					} else if r != testValueName {
+						Fail("Should have paniced with value name as message!!!")
+					}
+				}()
 
-					StringIsNotEmpty(emptyString, testValueName, emptyString)
-				})
-			})
-
-			Context("with value name contains whitespace", func() {
-				It("Should panic with provided trimmed value as message", func() {
-					defer func() {
-						if r := recover(); r == nil {
-							Fail("Should have paniced with provided trimmed value as message!!!")
-						} else if r != strings.TrimSpace(testValueNameWithWhitespace) {
-							Fail("Should have paniced with provided trimmed value as message!!!")
-						}
-					}()
-
-					StringIsNotEmpty(emptyString, testValueNameWithWhitespace, emptyString)
-				})
+				StringIsNotEmpty(emptyString, testValueName, emptyString)
 			})
 		})
 
-		Context("with message only provided", func() {
-			Context("with message contains no whitespace", func() {
-				It("Should panic with provided message as message", func() {
-					defer func() {
-						if r := recover(); r == nil {
-							Fail("Should have paniced with provided message as message!!!")
-						} else if r != testMessage {
-							Fail("Should have paniced with provided message as message!!!")
-						}
-					}()
+		Context("with message provided", func() {
+			It("Should panic with provided message as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with message as message!!!")
+					} else if r != testMessage {
+						Fail("Should have paniced with message as message!!!")
+					}
+				}()
 
-					StringIsNotEmpty(emptyString, emptyString, testMessage)
-				})
-			})
-
-			Context("with message contains whitespace", func() {
-				It("Should panic with provided trimmed message as message", func() {
-					defer func() {
-						if r := recover(); r == nil {
-							Fail("Should have paniced with provided trimmed message as message!!!")
-						} else if r != strings.TrimSpace(testMessageWithWhitespace) {
-							Fail("Should have paniced with provided trimmed message as message!!!")
-						}
-					}()
-
-					StringIsNotEmpty(emptyString, emptyString, testMessageWithWhitespace)
-				})
+				StringIsNotEmpty(emptyString, emptyString, testMessage)
 			})
 		})
 
-		Context("with value name and message both provided", func() {
-			Context("with message contains no whitespace", func() {
-				It("Should panic with provided message as message and ignore value name", func() {
-					defer func() {
-						if r := recover(); r == nil {
-							Fail("Should have paniced with provided message as message!!!")
-						} else if r != testMessage {
-							Fail("Should have paniced with provided message as message!!!")
-						}
-					}()
+		Context("with name and message both provided", func() {
+			It("Should panic with provided message as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with message as message!!!")
+					} else if r != testMessage {
+						Fail("Should have paniced with message as message!!!")
+					}
+				}()
 
-					StringIsNotEmpty(emptyString, testValueName, testMessage)
-				})
+				StringIsNotEmpty(emptyString, testValueName, testMessage)
 			})
+		})
+	})
+})
 
-			Context("with message contains whitespace", func() {
-				It("Should panic with provided trimmed message as message and ignore value name", func() {
-					defer func() {
-						if r := recover(); r == nil {
-							Fail("Should have paniced with provided trimmed message as message!!!")
-						} else if r != strings.TrimSpace(testMessageWithWhitespace) {
-							Fail("Should have paniced with provided trimmed message as message!!!")
-						}
-					}()
+var _ = Describe("Assert String is not empty or whitespace", func() {
+	var (
+		emptyString   string
+		whitespace    string
+		testValueName string
+		testMessage   string
+	)
 
-					StringIsNotEmpty(emptyString, testValueName, testMessageWithWhitespace)
-				})
+	BeforeEach(func() {
+		emptyString = ""
+		whitespace = "    "
+		testValueName = "Test Value"
+		testMessage = "Test Message"
+	})
+
+	Describe("when empty string value provided", func() {
+		Context("with value name and message both emptyd", func() {
+			It("Should panic with empty string as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with empty as message!!!")
+					} else if r != emptyString {
+						Fail("Should have paniced with empty as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(emptyString, emptyString, emptyString)
+			})
+		})
+
+		Context("with value name provided", func() {
+			It("Should panic with provided value name as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with value name as message!!!")
+					} else if r != testValueName {
+						Fail("Should have paniced with value name as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(emptyString, testValueName, emptyString)
+			})
+		})
+
+		Context("with message provided", func() {
+			It("Should panic with provided message as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with message as message!!!")
+					} else if r != testMessage {
+						Fail("Should have paniced with message as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(emptyString, emptyString, testMessage)
+			})
+		})
+
+		Context("with name and message both provided", func() {
+			It("Should panic with provided message as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with message as message!!!")
+					} else if r != testMessage {
+						Fail("Should have paniced with message as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(emptyString, testValueName, testMessage)
+			})
+		})
+	})
+
+	Describe("when string contains whitespace characters only provided", func() {
+		Context("with value name and message both emptyd", func() {
+			It("Should panic with empty string as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with empty as message!!!")
+					} else if r != emptyString {
+						Fail("Should have paniced with empty as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(whitespace, emptyString, emptyString)
+			})
+		})
+
+		Context("with value name provided", func() {
+			It("Should panic with provided value name as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with value name as message!!!")
+					} else if r != testValueName {
+						Fail("Should have paniced with value name as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(whitespace, testValueName, emptyString)
+			})
+		})
+
+		Context("with message provided", func() {
+			It("Should panic with provided message as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with message as message!!!")
+					} else if r != testMessage {
+						Fail("Should have paniced with message as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(whitespace, emptyString, testMessage)
+			})
+		})
+
+		Context("with name and message both provided", func() {
+			It("Should panic with provided message as message", func() {
+				defer func() {
+					if r := recover(); r == nil {
+						Fail("Should have paniced with message as message!!!")
+					} else if r != testMessage {
+						Fail("Should have paniced with message as message!!!")
+					}
+				}()
+
+				StringIsNotEmptyOrWhitespace(whitespace, testValueName, testMessage)
 			})
 		})
 	})
@@ -137,5 +213,6 @@ var _ = Describe("Assert String", func() {
 
 func TestAssertString(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Assert String")
+	RunSpecs(t, "Assert String is not empty")
+	RunSpecs(t, "Assert String is not empty or whitespace")
 }
