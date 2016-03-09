@@ -1,6 +1,7 @@
-package diagnostics
+package diagnostics_test
 
 import (
+	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -31,7 +32,7 @@ var _ = Describe("Assert String is not empty", func() {
 					}
 				}()
 
-				StringIsNotEmpty(emptyString, emptyString, emptyString)
+				diagnostics.StringIsNotEmpty(emptyString, emptyString, emptyString)
 			})
 		})
 
@@ -45,7 +46,7 @@ var _ = Describe("Assert String is not empty", func() {
 					}
 				}()
 
-				StringIsNotEmpty(emptyString, testValueName, emptyString)
+				diagnostics.StringIsNotEmpty(emptyString, testValueName, emptyString)
 			})
 		})
 
@@ -59,7 +60,7 @@ var _ = Describe("Assert String is not empty", func() {
 					}
 				}()
 
-				StringIsNotEmpty(emptyString, emptyString, testMessage)
+				diagnostics.StringIsNotEmpty(emptyString, emptyString, testMessage)
 			})
 		})
 
@@ -73,7 +74,7 @@ var _ = Describe("Assert String is not empty", func() {
 					}
 				}()
 
-				StringIsNotEmpty(emptyString, testValueName, testMessage)
+				diagnostics.StringIsNotEmpty(emptyString, testValueName, testMessage)
 			})
 		})
 	})
@@ -105,7 +106,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(emptyString, emptyString, emptyString)
+				diagnostics.StringIsNotEmptyOrWhitespace(emptyString, emptyString, emptyString)
 			})
 		})
 
@@ -119,7 +120,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(emptyString, testValueName, emptyString)
+				diagnostics.StringIsNotEmptyOrWhitespace(emptyString, testValueName, emptyString)
 			})
 		})
 
@@ -133,7 +134,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(emptyString, emptyString, testMessage)
+				diagnostics.StringIsNotEmptyOrWhitespace(emptyString, emptyString, testMessage)
 			})
 		})
 
@@ -147,7 +148,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(emptyString, testValueName, testMessage)
+				diagnostics.StringIsNotEmptyOrWhitespace(emptyString, testValueName, testMessage)
 			})
 		})
 	})
@@ -163,7 +164,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(whitespace, emptyString, emptyString)
+				diagnostics.StringIsNotEmptyOrWhitespace(whitespace, emptyString, emptyString)
 			})
 		})
 
@@ -177,7 +178,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(whitespace, testValueName, emptyString)
+				diagnostics.StringIsNotEmptyOrWhitespace(whitespace, testValueName, emptyString)
 			})
 		})
 
@@ -191,7 +192,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(whitespace, emptyString, testMessage)
+				diagnostics.StringIsNotEmptyOrWhitespace(whitespace, emptyString, testMessage)
 			})
 		})
 
@@ -205,7 +206,7 @@ var _ = Describe("Assert String is not empty or whitespace", func() {
 					}
 				}()
 
-				StringIsNotEmptyOrWhitespace(whitespace, testValueName, testMessage)
+				diagnostics.StringIsNotEmptyOrWhitespace(whitespace, testValueName, testMessage)
 			})
 		})
 	})
