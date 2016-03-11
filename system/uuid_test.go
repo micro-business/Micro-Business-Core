@@ -1,4 +1,4 @@
-package datatype_test
+package system_test
 
 import (
 	"bytes"
@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/microbusinesses/Micro-Businesses-Core/common/datatype"
+	"github.com/microbusinesses/Micro-Businesses-Core/system"
 )
 
 func TestUUIDNil(t *testing.T) {
-	var uuid datatype.UUID
+	var uuid system.UUID
 	want, got := "00000000-0000-0000-0000-000000000000", uuid.String()
 	if want != got {
 		t.Fatalf("TestNil: expected %q got %q", want, got)
@@ -22,24 +22,24 @@ var testsUUID = []struct {
 	variant int
 	version int
 }{
-	{"b4f00409-cef8-4822-802c-deb20704c365", datatype.VariantIETF, 4},
-	{"B4F00409-CEF8-4822-802C-DEB20704C365", datatype.VariantIETF, 4}, //Use capital letters
-	{"f81d4fae-7dec-11d0-a765-00a0c91e6bf6", datatype.VariantIETF, 1},
-	{"00000000-7dec-11d0-a765-00a0c91e6bf6", datatype.VariantIETF, 1},
-	{"3051a8d7-aea7-1801-e0bf-bc539dd60cf3", datatype.VariantFuture, 1},
-	{"3051a8d7-aea7-2801-e0bf-bc539dd60cf3", datatype.VariantFuture, 2},
-	{"3051a8d7-aea7-3801-e0bf-bc539dd60cf3", datatype.VariantFuture, 3},
-	{"3051a8d7-aea7-4801-e0bf-bc539dd60cf3", datatype.VariantFuture, 4},
-	{"3051a8d7-aea7-3801-e0bf-bc539dd60cf3", datatype.VariantFuture, 5},
-	{"d0e817e1-e4b1-1801-3fe6-b4b60ccecf9d", datatype.VariantNCSCompat, 0},
-	{"d0e817e1-e4b1-1801-bfe6-b4b60ccecf9d", datatype.VariantIETF, 1},
-	{"d0e817e1-e4b1-1801-dfe6-b4b60ccecf9d", datatype.VariantMicrosoft, 0},
-	{"d0e817e1-e4b1-1801-ffe6-b4b60ccecf9d", datatype.VariantFuture, 0},
+	{"b4f00409-cef8-4822-802c-deb20704c365", system.VariantIETF, 4},
+	{"B4F00409-CEF8-4822-802C-DEB20704C365", system.VariantIETF, 4}, //Use capital letters
+	{"f81d4fae-7dec-11d0-a765-00a0c91e6bf6", system.VariantIETF, 1},
+	{"00000000-7dec-11d0-a765-00a0c91e6bf6", system.VariantIETF, 1},
+	{"3051a8d7-aea7-1801-e0bf-bc539dd60cf3", system.VariantFuture, 1},
+	{"3051a8d7-aea7-2801-e0bf-bc539dd60cf3", system.VariantFuture, 2},
+	{"3051a8d7-aea7-3801-e0bf-bc539dd60cf3", system.VariantFuture, 3},
+	{"3051a8d7-aea7-4801-e0bf-bc539dd60cf3", system.VariantFuture, 4},
+	{"3051a8d7-aea7-3801-e0bf-bc539dd60cf3", system.VariantFuture, 5},
+	{"d0e817e1-e4b1-1801-3fe6-b4b60ccecf9d", system.VariantNCSCompat, 0},
+	{"d0e817e1-e4b1-1801-bfe6-b4b60ccecf9d", system.VariantIETF, 1},
+	{"d0e817e1-e4b1-1801-dfe6-b4b60ccecf9d", system.VariantMicrosoft, 0},
+	{"d0e817e1-e4b1-1801-ffe6-b4b60ccecf9d", system.VariantFuture, 0},
 }
 
 func TestPredefinedUUID(t *testing.T) {
 	for i := range testsUUID {
-		uuid, err := datatype.ParseUUID(testsUUID[i].input)
+		uuid, err := system.ParseUUID(testsUUID[i].input)
 		if err != nil {
 			t.Errorf("ParseUUID #%d: %v", i, err)
 			continue
@@ -54,7 +54,7 @@ func TestPredefinedUUID(t *testing.T) {
 			t.Errorf("Variant #%d: expected %d got %d", i, testsUUID[i].variant, variant)
 		}
 
-		if testsUUID[i].variant == datatype.VariantIETF {
+		if testsUUID[i].variant == system.VariantIETF {
 			if version := uuid.Version(); version != testsUUID[i].version {
 				t.Errorf("Version #%d: expected %d got %d", i, testsUUID[i].version, version)
 			}
@@ -69,7 +69,7 @@ func TestPredefinedUUID(t *testing.T) {
 			t.Errorf("MarshalJSON #%d: expected %v got %v", i, expectedJson, string(json))
 		}
 
-		var unmarshaled datatype.UUID
+		var unmarshaled system.UUID
 		err = unmarshaled.UnmarshalJSON(json)
 		if err != nil {
 			t.Errorf("UnmarshalJSON #%d: %v", i, err)
@@ -81,19 +81,19 @@ func TestPredefinedUUID(t *testing.T) {
 }
 
 func TestInvalidUUIDCharacter(t *testing.T) {
-	_, err := datatype.ParseUUID("z4f00409-cef8-4822-802c-deb20704c365")
+	_, err := system.ParseUUID("z4f00409-cef8-4822-802c-deb20704c365")
 	if err == nil || !strings.Contains(err.Error(), "invalid UUID") {
 		t.Fatalf("expected invalid UUID error, got '%v' ", err)
 	}
 }
 
 func TestInvalidUUIDLength(t *testing.T) {
-	_, err := datatype.ParseUUID("4f00")
+	_, err := system.ParseUUID("4f00")
 	if err == nil || !strings.Contains(err.Error(), "invalid UUID") {
 		t.Fatalf("expected invalid UUID error, got '%v' ", err)
 	}
 
-	_, err = datatype.UUIDFromBytes(datatype.TimeUUID().Bytes()[:15])
+	_, err = system.UUIDFromBytes(system.TimeUUID().Bytes()[:15])
 	if err == nil || err.Error() != "UUIDs must be exactly 16 bytes long" {
 		t.Fatalf("expected error '%v', got '%v'", "UUIDs must be exactly 16 bytes long", err)
 	}
@@ -101,12 +101,12 @@ func TestInvalidUUIDLength(t *testing.T) {
 
 func TestRandomUUID(t *testing.T) {
 	for i := 0; i < 20; i++ {
-		uuid, err := datatype.RandomUUID()
+		uuid, err := system.RandomUUID()
 		if err != nil {
 			t.Errorf("RandomUUID: %v", err)
 		}
-		if variant := uuid.Variant(); variant != datatype.VariantIETF {
-			t.Errorf("wrong variant. expected %d got %d", datatype.VariantIETF, variant)
+		if variant := uuid.Variant(); variant != system.VariantIETF {
+			t.Errorf("wrong variant. expected %d got %d", system.VariantIETF, variant)
 		}
 		if version := uuid.Version(); version != 4 {
 			t.Errorf("wrong version. expected %d got %d", 4, version)
@@ -115,7 +115,7 @@ func TestRandomUUID(t *testing.T) {
 }
 
 func TestRandomUUIDInvalidAPICalls(t *testing.T) {
-	uuid, err := datatype.RandomUUID()
+	uuid, err := system.RandomUUID()
 	if err != nil {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -135,7 +135,7 @@ func TestRandomUUIDInvalidAPICalls(t *testing.T) {
 
 func TestUUIDFromTime(t *testing.T) {
 	date := time.Date(1982, 5, 5, 12, 34, 56, 400, time.UTC)
-	uuid := datatype.UUIDFromTime(date)
+	uuid := system.UUIDFromTime(date)
 
 	if uuid.Time() != date {
 		t.Errorf("embedded time incorrect. Expected %v got %v", date, uuid.Time())
@@ -143,7 +143,7 @@ func TestUUIDFromTime(t *testing.T) {
 }
 
 func TestParseUUID(t *testing.T) {
-	uuid, _ := datatype.ParseUUID("486f3a88-775b-11e3-ae07-d231feb1dc81")
+	uuid, _ := system.ParseUUID("486f3a88-775b-11e3-ae07-d231feb1dc81")
 	if uuid.Time() != time.Date(2014, 1, 7, 5, 19, 29, 222516000, time.UTC) {
 		t.Errorf("Expected date of 1/7/2014 at 5:19:29.222516, got %v", uuid.Time())
 	}
@@ -153,10 +153,10 @@ func TestTimeUUID(t *testing.T) {
 	var node []byte
 	timestamp := int64(0)
 	for i := 0; i < 20; i++ {
-		uuid := datatype.TimeUUID()
+		uuid := system.TimeUUID()
 
-		if variant := uuid.Variant(); variant != datatype.VariantIETF {
-			t.Errorf("wrong variant. expected %d got %d", datatype.VariantIETF, variant)
+		if variant := uuid.Variant(); variant != system.VariantIETF {
+			t.Errorf("wrong variant. expected %d got %d", system.VariantIETF, variant)
 		}
 		if version := uuid.Version(); version != 1 {
 			t.Errorf("wrong version. expected %d got %d", 1, version)
@@ -177,7 +177,7 @@ func TestTimeUUID(t *testing.T) {
 }
 
 func TestUnmarshalJSON(t *testing.T) {
-	var withHyphens, withoutHypens, tooLong datatype.UUID
+	var withHyphens, withoutHypens, tooLong system.UUID
 
 	withHyphens.UnmarshalJSON([]byte(`"486f3a88-775b-11e3-ae07-d231feb1dc81"`))
 	if withHyphens.Time().Truncate(time.Second) != time.Date(2014, 1, 7, 5, 19, 29, 0, time.UTC) {
@@ -197,7 +197,7 @@ func TestUnmarshalJSON(t *testing.T) {
 }
 
 func TestMarshalText(t *testing.T) {
-	u, err := datatype.ParseUUID("486f3a88-775b-11e3-ae07-d231feb1dc81")
+	u, err := system.ParseUUID("486f3a88-775b-11e3-ae07-d231feb1dc81")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -207,7 +207,7 @@ func TestMarshalText(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var u2 datatype.UUID
+	var u2 system.UUID
 	if err := u2.UnmarshalText(text); err != nil {
 		t.Fatal(err)
 	}
