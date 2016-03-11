@@ -31,6 +31,8 @@ const (
 	VariantFuture    = 7
 )
 
+var EmptyUUID = UUID{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+
 func init() {
 	if interfaces, err := net.Interfaces(); err == nil {
 		for _, i := range interfaces {
