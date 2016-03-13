@@ -27,15 +27,16 @@ func IsNil(value interface{}, valueName, message string) interface{} {
 // If checks passed, same provided value will be returned
 func IsNilOrEmpty(value interface{}, valueName, message string) interface{} {
 	if value != nil {
-		if val, ok := value.(UUID); ok {
+		switch val := value.(type) {
+		case UUID:
 			if val != EmptyUUID {
 				panic(getMessage(valueName, message))
 			}
-		} else if val, ok := value.(string); ok {
+		case string:
 			if len(val) != 0 {
 				panic(getMessage(valueName, message))
 			}
-		} else {
+		default:
 			panic(getMessage(valueName, message))
 		}
 	}
@@ -50,15 +51,16 @@ func IsNilOrEmpty(value interface{}, valueName, message string) interface{} {
 // If checks passed, same provided value will be returned
 func IsNilOrEmptyOrWhitespace(value interface{}, valueName, message string) interface{} {
 	if value != nil {
-		if val, ok := value.(UUID); ok {
+		switch val := value.(type) {
+		case UUID:
 			if val != EmptyUUID {
 				panic(getMessage(valueName, message))
 			}
-		} else if val, ok := value.(string); ok {
+		case string:
 			if len(strings.TrimSpace(val)) != 0 {
 				panic(getMessage(valueName, message))
 			}
-		} else {
+		default:
 			panic(getMessage(valueName, message))
 		}
 	}
@@ -87,15 +89,16 @@ func IsNotNil(value interface{}, valueName, message string) interface{} {
 func IsNotNilOrEmpty(value interface{}, valueName, message string) interface{} {
 	IsNotNil(value, valueName, message)
 
-	if val, ok := value.(UUID); ok {
+	switch val := value.(type) {
+	case UUID:
 		if val == EmptyUUID {
 			panic(getMessage(valueName, message))
 		}
-	} else if val, ok := value.(string); ok {
+	case string:
 		if len(val) == 0 {
 			panic(getMessage(valueName, message))
 		}
-	} else {
+	default:
 		panic(getMessage(valueName, message))
 	}
 
