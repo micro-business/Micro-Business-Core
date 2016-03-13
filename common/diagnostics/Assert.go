@@ -4,71 +4,116 @@ package diagnostics
 import (
 	"strings"
 
-	"github.com/microbusinesses/Micro-Businesses-Core/system"
+	. "github.com/microbusinesses/Micro-Businesses-Core/system"
 )
 
-// Makes sure provided value is not an empty string, otherwise it panics
+// Makes sure provided value is nil, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
 // If checks passed, same provided value will be returned
-func StringIsEmpty(value, valueName, message string) string {
-	if len(value) != 0 {
+func IsNil(value interface{}, valueName, message string) interface{} {
+	if value != nil {
 		panic(getMessage(valueName, message))
 	}
 
 	return value
 }
 
-// Makes sure provided value is not an empty string, otherwise it panics
+// Makes sure provided value is nil or empty, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
 // If checks passed, same provided value will be returned
-func StringIsNotEmpty(value, valueName, message string) string {
-	if len(value) == 0 {
+func IsNilOrEmpty(value interface{}, valueName, message string) interface{} {
+	if value != nil {
+		if val, ok := value.(UUID); ok {
+			if val != EmptyUUID {
+				panic(getMessage(valueName, message))
+			}
+		} else if val, ok := value.(string); ok {
+			if len(val) != 0 {
+				panic(getMessage(valueName, message))
+			}
+		} else {
+			panic(getMessage(valueName, message))
+		}
+	}
+
+	return value
+}
+
+// Makes sure provided value is nil, empty or contains whitespace only, otherwise it panics.
+// value: the value to be checked
+// valueName: Optional. Contains the name of the value the Assert was called on
+// message: Optional. Contains the message to be displated if the Assert failed.
+// If checks passed, same provided value will be returned
+func IsNilOrEmptyOrWhitespace(value interface{}, valueName, message string) interface{} {
+	if value != nil {
+		if val, ok := value.(UUID); ok {
+			if val != EmptyUUID {
+				panic(getMessage(valueName, message))
+			}
+		} else if val, ok := value.(string); ok {
+			if len(strings.TrimSpace(val)) != 0 {
+				panic(getMessage(valueName, message))
+			}
+		} else {
+			panic(getMessage(valueName, message))
+		}
+	}
+
+	return value
+}
+
+// Makes sure provided value is not nil, otherwise it panics.
+// value: the value to be checked
+// valueName: Optional. Contains the name of the value the Assert was called on
+// message: Optional. Contains the message to be displated if the Assert failed.
+// If checks passed, same provided value will be returned
+func IsNotNil(value interface{}, valueName, message string) interface{} {
+	if value == nil {
 		panic(getMessage(valueName, message))
 	}
 
 	return value
 }
 
-// Makes sure provided value is not an empty string or only contains whitespace, otherwise it panics
+// Makes sure provided value is not nil or empty, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
 // If checks passed, same provided value will be returned
-func StringIsNotEmptyOrWhitespace(value, valueName, message string) string {
-	StringIsNotEmpty(value, valueName, message)
+func IsNotNilOrEmpty(value interface{}, valueName, message string) interface{} {
+	IsNotNil(value, valueName, message)
 
-	if len(strings.TrimSpace(value)) == 0 {
+	if val, ok := value.(UUID); ok {
+		if val == EmptyUUID {
+			panic(getMessage(valueName, message))
+		}
+	} else if val, ok := value.(string); ok {
+		if len(val) == 0 {
+			panic(getMessage(valueName, message))
+		}
+	} else {
 		panic(getMessage(valueName, message))
 	}
 
 	return value
 }
 
-// Makes sure provided value is an empty UUID, otherwise it panics
+// Makes sure provided value is not nil, empty or contains whitesapce only, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
 // If checks passed, same provided value will be returned
-func UUIDIsEmpty(value system.UUID, valueName, message string) system.UUID {
-	if value != system.EmptyUUID {
-		panic(getMessage(valueName, message))
-	}
+func IsNotNilOrEmptyOrWhitespace(value interface{}, valueName, message string) interface{} {
+	IsNotNilOrEmpty(value, valueName, message)
 
-	return value
-}
-
-// Makes sure provided value is not an empty UUID, otherwise it panics
-// value: the value to be checked
-// valueName: Optional. Contains the name of the value the Assert was called on
-// message: Optional. Contains the message to be displated if the Assert failed.
-// If checks passed, same provided value will be returned
-func UUIDIsNotEmpty(value system.UUID, valueName, message string) system.UUID {
-	if value == system.EmptyUUID {
-		panic(getMessage(valueName, message))
+	if val, ok := value.(string); ok {
+		if len(strings.TrimSpace(val)) == 0 {
+			panic(getMessage(valueName, message))
+		}
 	}
 
 	return value
