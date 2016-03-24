@@ -1,4 +1,4 @@
-// Contains function to simplify checking pre-conditions required before executing an operation
+// Contains functions to simplify checking the required pre-conditions before executing an operation
 package diagnostics
 
 import (
@@ -125,7 +125,6 @@ func IsNotNilOrEmptyOrWhitespace(value interface{}, valueName, message string) i
 // Returns the message to be displayed when calling different Assert functions.
 // valueName: Optional. Contains the name of value the Assert was called on.
 // message: Optional. Contains the message to be displayed if the Assert failed.
-//
 // Remarks: Both valueName and message will be trimmed before running the checks
 func getMessage(valueName, message string) string {
 	valueName = strings.TrimSpace(valueName)
@@ -137,7 +136,7 @@ func getMessage(valueName, message string) string {
 		return message
 	} else if len(valueName) != 0 && len(message) == 0 {
 		return valueName
-	} else {
-		return ""
 	}
+	return ""
+	
 }
