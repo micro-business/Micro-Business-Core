@@ -2,6 +2,7 @@
 package diagnostics
 
 import (
+	"reflect"
 	"strings"
 
 	. "github.com/microbusinesses/Micro-Businesses-Core/system"
@@ -74,8 +75,14 @@ func IsNilOrEmptyOrWhitespace(value interface{}, valueName, message string) inte
 // message: Optional. Contains the message to be displated if the Assert failed.
 // If checks passed, same provided value will be returned
 func IsNotNil(value interface{}, valueName, message string) interface{} {
-	if value == nil {
-		panic(getMessage(valueName, message))
+	if _, ok := value.(string); ok {
+		if value == nil {
+			panic(getMessage(valueName, message))
+		}
+	} else {
+		if value == nil || reflect.ValueOf(value).IsNil() {
+			panic(getMessage(valueName, message))
+		}
 	}
 
 	return value
@@ -137,6 +144,6 @@ func getMessage(valueName, message string) string {
 	} else if len(valueName) != 0 && len(message) == 0 {
 		return valueName
 	}
+
 	return ""
-	
 }
