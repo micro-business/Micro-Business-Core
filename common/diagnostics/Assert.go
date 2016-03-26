@@ -78,7 +78,9 @@ func IsNotNil(value interface{}, valueName, message string) interface{} {
 	if value == nil {
 		panic(getMessage(valueName, message))
 	} else {
-		if reflect.TypeOf(value).Kind() == reflect.UnsafePointer {
+		valueType := reflect.TypeOf(value).Kind()
+
+		if valueType == reflect.UnsafePointer || valueType == reflect.Ptr {
 			if reflect.ValueOf(value).IsNil() {
 				panic(getMessage(valueName, message))
 			}
