@@ -1,8 +1,8 @@
 package diagnostics_test
 
 import (
-	. "github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
-	. "github.com/microbusinesses/Micro-Businesses-Core/system"
+	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
+	"github.com/microbusinesses/Micro-Businesses-Core/system"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -22,25 +22,25 @@ var _ = Describe("Assert", func() {
 	BeforeEach(func() {
 		emptyString = ""
 
-		uuid, _ := RandomUUID()
+		uuid, _ := system.RandomUUID()
 		testString = uuid.String()
 
 		testWhitespace = "      "
 
-		uuid, _ = RandomUUID()
+		uuid, _ = system.RandomUUID()
 		testValue = uuid.String()
 
-		uuid, _ = RandomUUID()
+		uuid, _ = system.RandomUUID()
 		testValueName = uuid.String()
 
-		uuid, _ = RandomUUID()
+		uuid, _ = system.RandomUUID()
 		testMessage = uuid.String()
 	})
 
 	Describe("IsNil", func() {
 		Context("when nil value provided", func() {
 			It("Should return nil", func() {
-				Expect(IsNil(nil, emptyString, emptyString)).To(BeNil())
+				Expect(diagnostics.IsNil(nil, emptyString, emptyString)).To(BeNil())
 			})
 		})
 
@@ -49,7 +49,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNil(testValue, emptyString, emptyString)
+					diagnostics.IsNil(testValue, emptyString, emptyString)
 				})
 			})
 
@@ -57,7 +57,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNil(testValue, testValueName, emptyString)
+					diagnostics.IsNil(testValue, testValueName, emptyString)
 				})
 			})
 
@@ -65,7 +65,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNil(testValue, emptyString, testMessage)
+					diagnostics.IsNil(testValue, emptyString, testMessage)
 				})
 			})
 
@@ -73,7 +73,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNil(testValue, testValueName, testMessage)
+					diagnostics.IsNil(testValue, testValueName, testMessage)
 				})
 			})
 		})
@@ -82,19 +82,19 @@ var _ = Describe("Assert", func() {
 	Describe("IsNilOrEmpty", func() {
 		Context("when nil value provided", func() {
 			It("Should return nil", func() {
-				Expect(IsNilOrEmpty(nil, emptyString, emptyString)).To(BeNil())
+				Expect(diagnostics.IsNilOrEmpty(nil, emptyString, emptyString)).To(BeNil())
 			})
 		})
 
 		Context("when empty string value provided", func() {
 			It("Should return empty string", func() {
-				Expect(IsNilOrEmpty(emptyString, emptyString, emptyString)).To(Equal(emptyString))
+				Expect(diagnostics.IsNilOrEmpty(emptyString, emptyString, emptyString)).To(Equal(emptyString))
 			})
 		})
 
 		Context("when empty UUID value provided", func() {
 			It("Should return empty UUID", func() {
-				Expect(IsNilOrEmpty(EmptyUUID, emptyString, emptyString)).To(Equal(EmptyUUID))
+				Expect(diagnostics.IsNilOrEmpty(system.EmptyUUID, emptyString, emptyString)).To(Equal(system.EmptyUUID))
 			})
 		})
 
@@ -103,7 +103,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNilOrEmpty(testValue, emptyString, emptyString)
+					diagnostics.IsNilOrEmpty(testValue, emptyString, emptyString)
 				})
 			})
 
@@ -111,7 +111,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNilOrEmpty(testValue, testValueName, emptyString)
+					diagnostics.IsNilOrEmpty(testValue, testValueName, emptyString)
 				})
 			})
 
@@ -119,7 +119,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNilOrEmpty(testValue, emptyString, testMessage)
+					diagnostics.IsNilOrEmpty(testValue, emptyString, testMessage)
 				})
 			})
 
@@ -127,7 +127,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNilOrEmpty(testValue, testValueName, testMessage)
+					diagnostics.IsNilOrEmpty(testValue, testValueName, testMessage)
 				})
 			})
 		})
@@ -136,25 +136,25 @@ var _ = Describe("Assert", func() {
 	Describe("IsNilOrEmptyOrWhitespace", func() {
 		Context("when nil value provided", func() {
 			It("Should return nil", func() {
-				Expect(IsNilOrEmptyOrWhitespace(nil, emptyString, emptyString)).To(BeNil())
+				Expect(diagnostics.IsNilOrEmptyOrWhitespace(nil, emptyString, emptyString)).To(BeNil())
 			})
 		})
 
 		Context("when empty string value provided", func() {
 			It("Should return empty string", func() {
-				Expect(IsNilOrEmptyOrWhitespace(emptyString, emptyString, emptyString)).To(Equal(emptyString))
+				Expect(diagnostics.IsNilOrEmptyOrWhitespace(emptyString, emptyString, emptyString)).To(Equal(emptyString))
 			})
 		})
 
 		Context("when string contains whitespace only as value provided", func() {
 			It("Should return provided value", func() {
-				Expect(IsNilOrEmptyOrWhitespace(testWhitespace, emptyString, emptyString)).To(Equal(testWhitespace))
+				Expect(diagnostics.IsNilOrEmptyOrWhitespace(testWhitespace, emptyString, emptyString)).To(Equal(testWhitespace))
 			})
 		})
 
 		Context("when empty UUID value provided", func() {
 			It("Should return empty UUID", func() {
-				Expect(IsNilOrEmptyOrWhitespace(EmptyUUID, emptyString, emptyString)).To(Equal(EmptyUUID))
+				Expect(diagnostics.IsNilOrEmptyOrWhitespace(system.EmptyUUID, emptyString, emptyString)).To(Equal(system.EmptyUUID))
 			})
 		})
 
@@ -163,7 +163,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNilOrEmptyOrWhitespace(testValue, emptyString, emptyString)
+					diagnostics.IsNilOrEmptyOrWhitespace(testValue, emptyString, emptyString)
 				})
 			})
 
@@ -171,7 +171,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNilOrEmptyOrWhitespace(testValue, testValueName, emptyString)
+					diagnostics.IsNilOrEmptyOrWhitespace(testValue, testValueName, emptyString)
 				})
 			})
 
@@ -179,7 +179,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNilOrEmptyOrWhitespace(testValue, emptyString, testMessage)
+					diagnostics.IsNilOrEmptyOrWhitespace(testValue, emptyString, testMessage)
 				})
 			})
 
@@ -187,7 +187,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNilOrEmptyOrWhitespace(testValue, testValueName, testMessage)
+					diagnostics.IsNilOrEmptyOrWhitespace(testValue, testValueName, testMessage)
 				})
 			})
 		})
@@ -196,7 +196,7 @@ var _ = Describe("Assert", func() {
 	Describe("IsNotNil", func() {
 		Context("when non-nil value provided", func() {
 			It("Should return provided value", func() {
-				Expect(IsNotNil(testValue, emptyString, emptyString)).To(Equal(testValue))
+				Expect(diagnostics.IsNotNil(testValue, emptyString, emptyString)).To(Equal(testValue))
 			})
 		})
 
@@ -205,7 +205,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNotNil(nil, emptyString, emptyString)
+					diagnostics.IsNotNil(nil, emptyString, emptyString)
 				})
 			})
 
@@ -213,7 +213,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNotNil(nil, testValueName, emptyString)
+					diagnostics.IsNotNil(nil, testValueName, emptyString)
 				})
 			})
 
@@ -221,7 +221,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNil(nil, emptyString, testMessage)
+					diagnostics.IsNotNil(nil, emptyString, testMessage)
 				})
 			})
 
@@ -229,7 +229,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNil(nil, testValueName, testMessage)
+					diagnostics.IsNotNil(nil, testValueName, testMessage)
 				})
 			})
 		})
@@ -238,7 +238,7 @@ var _ = Describe("Assert", func() {
 	Describe("IsNotNilOrEmpty", func() {
 		Context("when non-nil value provided", func() {
 			It("Should return provided value", func() {
-				Expect(IsNotNilOrEmpty(testValue, emptyString, emptyString)).To(Equal(testValue))
+				Expect(diagnostics.IsNotNilOrEmpty(testValue, emptyString, emptyString)).To(Equal(testValue))
 			})
 		})
 
@@ -247,7 +247,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNotNilOrEmpty(nil, emptyString, emptyString)
+					diagnostics.IsNotNilOrEmpty(nil, emptyString, emptyString)
 				})
 			})
 
@@ -255,7 +255,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNotNilOrEmpty(nil, testValueName, emptyString)
+					diagnostics.IsNotNilOrEmpty(nil, testValueName, emptyString)
 				})
 			})
 
@@ -263,7 +263,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmpty(nil, emptyString, testMessage)
+					diagnostics.IsNotNilOrEmpty(nil, emptyString, testMessage)
 				})
 			})
 
@@ -271,7 +271,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmpty(nil, testValueName, testMessage)
+					diagnostics.IsNotNilOrEmpty(nil, testValueName, testMessage)
 				})
 			})
 		})
@@ -281,7 +281,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNotNilOrEmpty(emptyString, emptyString, emptyString)
+					diagnostics.IsNotNilOrEmpty(emptyString, emptyString, emptyString)
 				})
 			})
 
@@ -289,7 +289,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNotNilOrEmpty(emptyString, testValueName, emptyString)
+					diagnostics.IsNotNilOrEmpty(emptyString, testValueName, emptyString)
 				})
 			})
 
@@ -297,7 +297,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmpty(emptyString, emptyString, testMessage)
+					diagnostics.IsNotNilOrEmpty(emptyString, emptyString, testMessage)
 				})
 			})
 
@@ -305,7 +305,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmpty(emptyString, testValueName, testMessage)
+					diagnostics.IsNotNilOrEmpty(emptyString, testValueName, testMessage)
 				})
 			})
 		})
@@ -314,7 +314,7 @@ var _ = Describe("Assert", func() {
 	Describe("IsNotNilOrEmptyOrWhitespace", func() {
 		Context("when non-nil value provided", func() {
 			It("Should return provided value", func() {
-				Expect(IsNotNilOrEmptyOrWhitespace(testValue, emptyString, emptyString)).To(Equal(testValue))
+				Expect(diagnostics.IsNotNilOrEmptyOrWhitespace(testValue, emptyString, emptyString)).To(Equal(testValue))
 			})
 		})
 
@@ -323,7 +323,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(nil, emptyString, emptyString)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(nil, emptyString, emptyString)
 				})
 			})
 
@@ -331,7 +331,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(nil, testValueName, emptyString)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(nil, testValueName, emptyString)
 				})
 			})
 
@@ -339,7 +339,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(nil, emptyString, testMessage)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(nil, emptyString, testMessage)
 				})
 			})
 
@@ -347,7 +347,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(nil, testValueName, testMessage)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(nil, testValueName, testMessage)
 				})
 			})
 		})
@@ -357,7 +357,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(emptyString, emptyString, emptyString)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(emptyString, emptyString, emptyString)
 				})
 			})
 
@@ -365,7 +365,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(emptyString, testValueName, emptyString)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(emptyString, testValueName, emptyString)
 				})
 			})
 
@@ -373,7 +373,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(emptyString, emptyString, testMessage)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(emptyString, emptyString, testMessage)
 				})
 			})
 
@@ -381,7 +381,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(emptyString, testValueName, testMessage)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(emptyString, testValueName, testMessage)
 				})
 			})
 		})
@@ -391,7 +391,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with empty string as message", func() {
 					defer assertPanic(emptyString, "Should have paniced with empty as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(testWhitespace, emptyString, emptyString)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(testWhitespace, emptyString, emptyString)
 				})
 			})
 
@@ -399,7 +399,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided value name as message", func() {
 					defer assertPanic(testValueName, "Should have paniced with value name as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(testWhitespace, testValueName, emptyString)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(testWhitespace, testValueName, emptyString)
 				})
 			})
 
@@ -407,7 +407,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(testWhitespace, emptyString, testMessage)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(testWhitespace, emptyString, testMessage)
 				})
 			})
 
@@ -415,7 +415,7 @@ var _ = Describe("Assert", func() {
 				It("Should panic with provided message as message", func() {
 					defer assertPanic(testMessage, "Should have paniced with message as message!!!")
 
-					IsNotNilOrEmptyOrWhitespace(testWhitespace, testValueName, testMessage)
+					diagnostics.IsNotNilOrEmptyOrWhitespace(testWhitespace, testValueName, testMessage)
 				})
 			})
 		})

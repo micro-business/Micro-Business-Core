@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	. "github.com/microbusinesses/Micro-Businesses-Core/system"
+	"github.com/microbusinesses/Micro-Businesses-Core/system"
 )
 
 // Makes sure provided value is nil, otherwise it panics.
@@ -29,8 +29,8 @@ func IsNil(value interface{}, valueName, message string) interface{} {
 func IsNilOrEmpty(value interface{}, valueName, message string) interface{} {
 	if value != nil {
 		switch val := value.(type) {
-		case UUID:
-			if val != EmptyUUID {
+		case system.UUID:
+			if val != system.EmptyUUID {
 				panic(getMessage(valueName, message))
 			}
 		case string:
@@ -53,8 +53,8 @@ func IsNilOrEmpty(value interface{}, valueName, message string) interface{} {
 func IsNilOrEmptyOrWhitespace(value interface{}, valueName, message string) interface{} {
 	if value != nil {
 		switch val := value.(type) {
-		case UUID:
-			if val != EmptyUUID {
+		case system.UUID:
+			if val != system.EmptyUUID {
 				panic(getMessage(valueName, message))
 			}
 		case string:
@@ -75,13 +75,13 @@ func IsNilOrEmptyOrWhitespace(value interface{}, valueName, message string) inte
 // message: Optional. Contains the message to be displated if the Assert failed.
 // If checks passed, same provided value will be returned
 func IsNotNil(value interface{}, valueName, message string) interface{} {
-	if _, ok := value.(string); ok {
-		if value == nil {
-			panic(getMessage(valueName, message))
-		}
+	if value == nil {
+		panic(getMessage(valueName, message))
 	} else {
-		if value == nil || reflect.ValueOf(value).IsNil() {
-			panic(getMessage(valueName, message))
+		if reflect.TypeOf(value).Kind() == reflect.UnsafePointer {
+			if reflect.ValueOf(value).IsNil() {
+				panic(getMessage(valueName, message))
+			}
 		}
 	}
 
@@ -97,8 +97,8 @@ func IsNotNilOrEmpty(value interface{}, valueName, message string) interface{} {
 	IsNotNil(value, valueName, message)
 
 	switch val := value.(type) {
-	case UUID:
-		if val == EmptyUUID {
+	case system.UUID:
+		if val == system.EmptyUUID {
 			panic(getMessage(valueName, message))
 		}
 	case string:
