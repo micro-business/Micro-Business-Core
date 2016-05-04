@@ -2,3 +2,8 @@ language: go
 go:
   - 1.6
 
+after_success:
+  - go get github.com/mattn/goveralls
+  - go get github.com/modocache/gover
+  - ./coverage.bash
+  - goveralls -coverprofile gover.coverprofile -service drone.io -repotoken $COVERALLS_TOKEN
