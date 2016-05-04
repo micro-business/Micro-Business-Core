@@ -15,7 +15,7 @@ type ConsulHelper struct {
 }
 
 func (consulHelper ConsulHelper) GetKeyPair(keyPath string) (*api.KVPair, error) {
-	diagnostics.IsNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
+	diagnostics.IsNotNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
 
 	kv, err := getKV(consulHelper)
 
@@ -31,7 +31,7 @@ func (consulHelper ConsulHelper) GetKeyPair(keyPath string) (*api.KVPair, error)
 }
 
 func (consulHelper ConsulHelper) GetInt(keyPath string) (int, error) {
-	diagnostics.IsNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
+	diagnostics.IsNotNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
 
 	keyPair, err := consulHelper.GetKeyPair(keyPath)
 
@@ -63,7 +63,7 @@ func (consulHelper ConsulHelper) GetInt(keyPath string) (int, error) {
 }
 
 func (consulHelper ConsulHelper) GetString(keyPath string) (string, error) {
-	diagnostics.IsNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
+	diagnostics.IsNotNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
 
 	keyPair, err := consulHelper.GetKeyPair(keyPath)
 
