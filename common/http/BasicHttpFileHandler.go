@@ -1,0 +1,75 @@
+package http
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
+	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
+)
+
+type BasicHttpFileHandler struct {
+}
+
+func (basicHttpFileHandler BasicHttpFileHandler) GetCaseSensitiveFileHandler(webDirectoryPath string) func(http.ResponseWriter, *http.Request) {
+	diagnostics.IsNotNilOrEmptyOrWhitespace(webDirectoryPath, "webDirectoryPath", "webDirectoryPath cannot be nil, empty or contains whitespace only.")
+
+	return getFileHandler(webDirectoryPath)
+}
+
+func (basicHttpFileHandler BasicHttpFileHandler) GetCaseInsensitiveFileHandler(serverMux *http.ServeMux, webDirectoryPath string) (func(http.ResponseWriter, *http.Request), http.Handler) {
+	diagnostics.IsNotNil(serverMux, "serverMux", "serverMux cannot be nil.")
+	diagnostics.IsNotNilOrEmptyOrWhitespace(webDirectoryPath, "webDirectoryPath", "webDirectoryPath cannot be nil, empty or contains whitespace only.")
+
+	caseInsensitiveFilehandler := http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		request.URL.Path = strings.ToLower(request.URL.Path)
+
+		serverMux.ServeHTTP(writer, request)
+	})
+
+	return getFileHandler(webDirectoryPath), caseInsensitiveFilehandler
+}
+
+func getFileHandler(webDirectoryPath string) func(writer http.ResponseWriter, request *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Access-Control-Allow-Origin", "*")
+		writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type")
+
+		filePath := webDirectoryPath + request.URL.Path
+
+		if fileContent, err := loadPage(filePath); err != nil {
+			writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			fmt.Fprintln(writer, err.Error())
+		} else {
+			switch strings.ToLower(filepath.Ext(filePath)) {
+			case ".js", ".jsx":
+				writer.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+			case ".html", ".htm":
+				writer.Header().Set("Content-Type", "text/html; charset=utf-8")
+			default:
+				writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			}
+
+			fmt.Fprintln(writer, fileContent)
+		}
+	}
+}
+
+func doesDirectoryExist(directoryPath string) bool {
+	if _, err := os.Stat(directoryPath); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}
+}
+
+func loadPage(filePath string) (string, error) {
+	if content, err := ioutil.ReadFile(filePath); err != nil {
+		return "", err
+	} else {
+		return string(content[:len(content)]), nil
+	}
+}
