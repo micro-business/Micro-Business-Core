@@ -37,6 +37,7 @@ func getFileHandler(webDirectoryPath string) func(writer http.ResponseWriter, re
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
 		writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type")
+		writer.Header().Set("Access-Control-Allow-Methods", "GET, POST")
 
 		filePath := webDirectoryPath + request.URL.Path
 
