@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/hashicorp/consul/api"
+	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
 )
 
 type ConsulHelper struct {
@@ -13,8 +14,26 @@ type ConsulHelper struct {
 	ConsulScheme  string
 }
 
+func (consulHelper ConsulHelper) GetKeyPair(keyPath string) (*api.KVPair, error) {
+	diagnostics.IsNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
+
+	kv, err := getKV(consulHelper)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if keyPair, _, err := kv.Get(keyPath, nil); err != nil {
+		return nil, err
+	} else {
+		return keyPair, nil
+	}
+}
+
 func (consulHelper ConsulHelper) GetInt(keyPath string) (int, error) {
-	keyPair, err := getKeyPair(consulHelper, keyPath)
+	diagnostics.IsNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
+
+	keyPair, err := consulHelper.GetKeyPair(keyPath)
 
 	if err != nil {
 		return 0, err
@@ -44,7 +63,9 @@ func (consulHelper ConsulHelper) GetInt(keyPath string) (int, error) {
 }
 
 func (consulHelper ConsulHelper) GetString(keyPath string) (string, error) {
-	keyPair, err := getKeyPair(consulHelper, keyPath)
+	diagnostics.IsNilOrEmptyOrWhitespace(keyPath, "keyPath", "keyPath cannot be null, empty or contains whitespace only.")
+
+	keyPair, err := consulHelper.GetKeyPair(keyPath)
 
 	if err != nil {
 		return "", err
@@ -71,19 +92,5 @@ func getKV(consulHelper ConsulHelper) (*api.KV, error) {
 		return nil, err
 	} else {
 		return client.KV(), nil
-	}
-}
-
-func getKeyPair(consulHelper ConsulHelper, configKeyPath string) (*api.KVPair, error) {
-	kv, err := getKV(consulHelper)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if keyPair, _, err := kv.Get(configKeyPath, nil); err != nil {
-		return nil, err
-	} else {
-		return keyPair, nil
 	}
 }
