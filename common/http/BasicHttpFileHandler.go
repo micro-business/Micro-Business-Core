@@ -39,7 +39,17 @@ func getFileHandler(webDirectoryPath string) func(writer http.ResponseWriter, re
 		writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type")
 		writer.Header().Set("Access-Control-Allow-Methods", "GET, POST")
 
+		fmt.Println("Morteza-> " + request.URL.Path)
+
 		filePath := webDirectoryPath + request.URL.Path
+
+		if request.URL.Path == "/" || len(request.URL.Path) == 0 {
+			if doesFileExist(webDirectoryPath + "/index.html") {
+				filePath = webDirectoryPath + "/index.html"
+			} else if doesFileExist(webDirectoryPath + "/index.htm") {
+				filePath = webDirectoryPath + "/index.htm"
+			}
+		}
 
 		if fileContent, err := loadPage(filePath); err != nil {
 			writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
@@ -61,6 +71,14 @@ func getFileHandler(webDirectoryPath string) func(writer http.ResponseWriter, re
 
 func doesDirectoryExist(directoryPath string) bool {
 	if _, err := os.Stat(directoryPath); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}
+}
+
+func doesFileExist(filePath string) bool {
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return false
 	} else {
 		return true
