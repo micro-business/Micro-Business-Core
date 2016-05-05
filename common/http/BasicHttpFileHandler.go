@@ -39,8 +39,6 @@ func getFileHandler(webDirectoryPath string) func(writer http.ResponseWriter, re
 		writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type")
 		writer.Header().Set("Access-Control-Allow-Methods", "GET, POST")
 
-		fmt.Println("Morteza-> " + request.URL.Path)
-
 		filePath := webDirectoryPath + request.URL.Path
 
 		if request.URL.Path == "/" || len(request.URL.Path) == 0 {
