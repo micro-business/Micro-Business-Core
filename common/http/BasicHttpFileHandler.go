@@ -49,20 +49,25 @@ func getFileHandler(webDirectoryPath string) func(writer http.ResponseWriter, re
 			}
 		}
 
-		if fileContent, err := loadPage(filePath); err != nil {
-			writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			fmt.Fprintln(writer, err.Error())
-		} else {
-			switch strings.ToLower(filepath.Ext(filePath)) {
-			case ".js", ".jsx":
-				writer.Header().Set("Content-Type", "application/javascript; charset=utf-8")
-			case ".html", ".htm":
-				writer.Header().Set("Content-Type", "text/html; charset=utf-8")
-			default:
-				writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			}
+		if doesFileExist(filePath) {
+			if fileContent, err := loadPage(filePath); err != nil {
+				http.Error(writer, err.Error(), http.StatusInternalServerError)
+			} else {
+				switch strings.ToLower(filepath.Ext(filePath)) {
+				case ".css":
+					writer.Header().Set("Content-Type", "text/css; charset=utf-8")
+				case ".js", ".jsx":
+					writer.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+				case ".html", ".htm":
+					writer.Header().Set("Content-Type", "text/html; charset=utf-8")
+				default:
+					writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
+				}
 
-			fmt.Fprintln(writer, fileContent)
+				fmt.Fprintln(writer, fileContent)
+			}
+		} else {
+			http.NotFound(writer, request)
 		}
 	}
 }
