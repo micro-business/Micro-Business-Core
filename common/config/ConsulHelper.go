@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 
@@ -9,6 +8,7 @@ import (
 	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
 )
 
+// ConsulHelper makes working with Consul distributed service discovery easier by providing function to read keys/values and convert them to int, string and etc.
 type ConsulHelper struct {
 	ConsulAddress string
 	ConsulScheme  string
@@ -23,11 +23,12 @@ func (consulHelper ConsulHelper) GetKeyPair(keyPath string) (*api.KVPair, error)
 		return nil, err
 	}
 
-	if keyPair, _, err := kv.Get(keyPath, nil); err != nil {
+	keyPair, _, err := kv.Get(keyPath, nil)
+	if err != nil {
 		return nil, err
-	} else {
-		return keyPair, nil
 	}
+
+	return keyPair, nil
 }
 
 func (consulHelper ConsulHelper) GetInt(keyPath string) (int, error) {
@@ -40,26 +41,28 @@ func (consulHelper ConsulHelper) GetInt(keyPath string) (int, error) {
 	}
 
 	if keyPair == nil {
-		return 0, errors.New(fmt.Sprintf("Consul key %s does not exist.", keyPath))
+		return 0, fmt.Errorf(fmt.Sprintf("Consul key %s does not exist.", keyPath))
 
 	}
 
 	valueInString := string(keyPair.Value)
 
 	if len(valueInString) == 0 {
-		return 0, errors.New(fmt.Sprintf("Consul key %s is empty.", keyPath))
+		return 0, fmt.Errorf(fmt.Sprintf("Consul key %s is empty.", keyPath))
 
 	}
 
-	if value, err := strconv.Atoi(valueInString); err != nil {
+	value, err := strconv.Atoi(valueInString)
+
+	if err != nil {
 		return 0, err
-	} else {
-		if value == 0 {
-			return 0, errors.New(fmt.Sprintf("Consul key %s is zero.", keyPath))
-		}
-
-		return value, nil
 	}
+
+	if value == 0 {
+		return 0, fmt.Errorf(fmt.Sprintf("Consul key %s is zero.", keyPath))
+	}
+
+	return value, nil
 }
 
 func (consulHelper ConsulHelper) GetString(keyPath string) (string, error) {
@@ -72,7 +75,7 @@ func (consulHelper ConsulHelper) GetString(keyPath string) (string, error) {
 	}
 
 	if keyPair == nil {
-		return "", errors.New(fmt.Sprintf("Consul key %s does not exist.", keyPath))
+		return "", fmt.Errorf(fmt.Sprintf("Consul key %s does not exist.", keyPath))
 
 	}
 
@@ -88,9 +91,10 @@ func getKV(consulHelper ConsulHelper) (*api.KV, error) {
 		config.Scheme = consulHelper.ConsulScheme
 	}
 
-	if client, err := api.NewClient(config); err != nil {
+	client, err := api.NewClient(config)
+	if err != nil {
 		return nil, err
-	} else {
-		return client.KV(), nil
 	}
+
+	return client.KV(), nil
 }

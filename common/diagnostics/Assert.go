@@ -1,4 +1,4 @@
-// Contains functions to simplify checking the required pre-conditions before executing an operation
+// Package diagnostics contains functions to simplify checking the required pre-conditions before executing an operation
 package diagnostics
 
 import (
@@ -8,7 +8,7 @@ import (
 	"github.com/microbusinesses/Micro-Businesses-Core/system"
 )
 
-// Makes sure provided value is nil, otherwise it panics.
+// IsNil makes sure provided value is nil, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
@@ -21,7 +21,7 @@ func IsNil(value interface{}, valueName, message string) interface{} {
 	return value
 }
 
-// Makes sure provided value is nil or empty, otherwise it panics.
+// IsNilOrEmpty makes sure provided value is nil or empty, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
@@ -45,7 +45,7 @@ func IsNilOrEmpty(value interface{}, valueName, message string) interface{} {
 	return value
 }
 
-// Makes sure provided value is nil, empty or contains whitespace only, otherwise it panics.
+// IsNilOrEmptyOrWhitespace makes sure provided value is nil, empty or contains whitespace only, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
@@ -90,7 +90,7 @@ func IsNotNil(value interface{}, valueName, message string) interface{} {
 	return value
 }
 
-// Makes sure provided value is not nil or empty, otherwise it panics.
+// IsNotNilOrEmpty makes sure provided value is not nil or empty, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
@@ -114,7 +114,7 @@ func IsNotNilOrEmpty(value interface{}, valueName, message string) interface{} {
 	return value
 }
 
-// Makes sure provided value is not nil, empty or contains whitesapce only, otherwise it panics.
+// IsNotNilOrEmptyOrWhitespace makes sure provided value is not nil, empty or contains whitesapce only, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
@@ -131,7 +131,7 @@ func IsNotNilOrEmptyOrWhitespace(value interface{}, valueName, message string) i
 	return value
 }
 
-// Returns the message to be displayed when calling different Assert functions.
+// getMessage returns the message to be displayed when calling different Assert functions.
 // valueName: Optional. Contains the name of value the Assert was called on.
 // message: Optional. Contains the message to be displayed if the Assert failed.
 // Remarks: Both valueName and message will be trimmed before running the checks

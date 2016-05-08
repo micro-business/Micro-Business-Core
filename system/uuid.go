@@ -78,7 +78,7 @@ func ParseUUID(input string) (UUID, error) {
 		default:
 			return UUID{}, fmt.Errorf("invalid UUID %q", input)
 		}
-		j += 1
+		j++
 	}
 	if j != 32 {
 		return UUID{}, fmt.Errorf("invalid UUID %q", input)
@@ -249,5 +249,5 @@ func (u UUID) MarshalText() ([]byte, error) {
 
 func (u *UUID) UnmarshalText(text []byte) (err error) {
 	*u, err = ParseUUID(string(text))
-	return
+	return err
 }
