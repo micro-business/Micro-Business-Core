@@ -2,6 +2,9 @@ language: go
 go:
   - 1.6
 
+script:
+  - go test -v -tags=integration ./...
+
 after_success:
   - go get github.com/mattn/goveralls
   - go get github.com/modocache/gover
