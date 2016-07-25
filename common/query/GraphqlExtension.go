@@ -3,8 +3,8 @@ package query
 import "github.com/graphql-go/graphql"
 
 type StringKeyValuePair struct {
-	Key   string `json:"id"`
-	Value string `json:"name"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 var StringKeyValuePairType = graphql.NewObject(
