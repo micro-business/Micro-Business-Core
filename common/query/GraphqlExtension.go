@@ -2,7 +2,7 @@ package query
 
 import "github.com/graphql-go/graphql"
 
-type StringKeyValue struct {
+type StringKeyValuePair struct {
 	Key   string `json:"id"`
 	Value string `json:"name"`
 }
