@@ -9,7 +9,7 @@ type StringKeyValuePair struct {
 
 var StringKeyValuePairType = graphql.NewObject(
 	graphql.ObjectConfig{
-		Name: "StringKeyValue",
+		Name: "StringKeyValuePair",
 		Fields: graphql.Fields{
 			"key":   &graphql.Field{Type: graphql.String},
 			"value": &graphql.Field{Type: graphql.String},
