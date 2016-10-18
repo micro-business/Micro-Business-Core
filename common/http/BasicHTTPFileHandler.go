@@ -11,16 +11,19 @@ import (
 	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
 )
 
-type BasicHTTPFileHandler struct {
+// BasicFileHandler type implements the service that can serve files over HTTP connection
+type BasicFileHandler struct {
 }
 
-func (basicHttpFileHandler BasicHTTPFileHandler) GetCaseSensitiveFileHandler(webDirectoryPath string) func(http.ResponseWriter, *http.Request) {
+// GetCaseSensitiveFileHandler returns the file handler (HTTP handler) that servers file over HTTP connection. Files name are case sensitive.
+func (basicFileHandler BasicFileHandler) GetCaseSensitiveFileHandler(webDirectoryPath string) func(http.ResponseWriter, *http.Request) {
 	diagnostics.IsNotNilOrEmptyOrWhitespace(webDirectoryPath, "webDirectoryPath", "webDirectoryPath cannot be nil, empty or contains whitespace only.")
 
 	return getFileHandler(webDirectoryPath)
 }
 
-func (basicHttpFileHandler BasicHTTPFileHandler) GetCaseInsensitiveFileHandler(serverMux *http.ServeMux, webDirectoryPath string) (func(http.ResponseWriter, *http.Request), http.Handler) {
+// GetCaseInsensitiveFileHandler returns the file handler (HTTP handler) that servers file over HTTP connection. Files name are case in-sensitive.
+func (basicFileHandler BasicFileHandler) GetCaseInsensitiveFileHandler(serverMux *http.ServeMux, webDirectoryPath string) (func(http.ResponseWriter, *http.Request), http.Handler) {
 	diagnostics.IsNotNil(serverMux, "serverMux", "serverMux cannot be nil.")
 	diagnostics.IsNotNilOrEmptyOrWhitespace(webDirectoryPath, "webDirectoryPath", "webDirectoryPath cannot be nil, empty or contains whitespace only.")
 
@@ -95,5 +98,5 @@ func loadPage(filePath string) (string, error) {
 		return "", err
 	}
 
-	return string(content[:len(content)]), nil
+	return string(content[:]), nil
 }

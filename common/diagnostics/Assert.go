@@ -69,7 +69,7 @@ func IsNilOrEmptyOrWhitespace(value interface{}, valueName, message string) inte
 	return value
 }
 
-// Makes sure provided value is not nil, otherwise it panics.
+//IsNotNil makes sure provided value is not nil, otherwise it panics.
 // value: the value to be checked
 // valueName: Optional. Contains the name of the value the Assert was called on
 // message: Optional. Contains the message to be displated if the Assert failed.
