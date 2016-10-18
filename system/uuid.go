@@ -1,3 +1,5 @@
+package system
+
 // Copyright (c) 2012 The gocql Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -6,7 +8,6 @@
 // identifiers, a standardized format in the form of a 128 bit number.
 //
 // http://tools.ietf.org/html/rfc4122
-package system
 
 import (
 	"crypto/rand"
@@ -19,18 +20,28 @@ import (
 	"time"
 )
 
+// UUID represents an identifier standard used in software construction. A UUID is simply a 128-bit value.
+// The meaning of each bit is defined by any of several variants.
 type UUID [16]byte
 
 var hardwareAddr []byte
 var clockSeq uint32
 
 const (
+	// VariantNCSCompat defines
 	VariantNCSCompat = 0
-	VariantIETF      = 2
+
+	// VariantIETF defines
+	VariantIETF = 2
+
+	// VariantMicrosoft defines
 	VariantMicrosoft = 6
-	VariantFuture    = 7
+
+	// VariantFuture defines
+	VariantFuture = 7
 )
 
+// EmptyUUID represents an empty UUID
 var EmptyUUID = UUID{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 func init() {
@@ -223,12 +234,12 @@ func (u UUID) Time() time.Time {
 	return time.Unix(sec+timeBase, nsec).UTC()
 }
 
-// Marshaling for JSON
+// MarshalJSON Marshaling for JSON
 func (u UUID) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + u.String() + `"`), nil
 }
 
-// Unmarshaling for JSON
+// UnmarshalJSON Unmarshaling for JSON
 func (u *UUID) UnmarshalJSON(data []byte) error {
 	str := strings.Trim(string(data), `"`)
 	if len(str) > 36 {
@@ -243,10 +254,12 @@ func (u *UUID) UnmarshalJSON(data []byte) error {
 	return err
 }
 
+// MarshalText marshaling for text
 func (u UUID) MarshalText() ([]byte, error) {
 	return []byte(u.String()), nil
 }
 
+// UnmarshalText unmarshalling for text
 func (u *UUID) UnmarshalText(text []byte) (err error) {
 	*u, err = ParseUUID(string(text))
 	return err
