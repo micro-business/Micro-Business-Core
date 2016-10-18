@@ -12,7 +12,6 @@ import (
 var _ = Describe("Assert", func() {
 	var (
 		emptyString    string
-		testString     string
 		testWhitespace string
 		testValue      string
 		testValueName  string
@@ -23,7 +22,6 @@ var _ = Describe("Assert", func() {
 		emptyString = ""
 
 		uuid, _ := system.RandomUUID()
-		testString = uuid.String()
 
 		testWhitespace = "      "
 
