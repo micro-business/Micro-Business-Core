@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
+	"github.com/microbusinesslimited/Micro-Business-Core/common/diagnostics"
 )
 
 // BasicFileHandler type implements the service that can serve files over HTTP connection

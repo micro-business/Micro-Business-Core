@@ -1,8 +1,8 @@
 package diagnostics_test
 
 import (
-	"github.com/microbusinesses/Micro-Businesses-Core/common/diagnostics"
-	"github.com/microbusinesses/Micro-Businesses-Core/system"
+	"github.com/microbusinesslimited/Micro-Business-Core/common/diagnostics"
+	"github.com/microbusinesslimited/Micro-Business-Core/system"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/microbusinesses/Micro-Businesses-Core/system"
+	"github.com/microbusinesslimited/Micro-Business-Core/system"
 )
 
 // IsNil makes sure provided value is nil, otherwise it panics.
