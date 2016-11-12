@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/hashicorp/consul/api"
-	"github.com/microbusinesslimited/Micro-Business-Core/common/diagnostics"
+	"github.com/micro-business/Micro-Business-Core/common/diagnostics"
 )
 
 // ConsulHelper makes working with Consul distributed service discovery easier by providing function to read keys/values and convert them to int, string and etc.

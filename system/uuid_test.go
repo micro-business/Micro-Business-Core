@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/microbusinesslimited/Micro-Business-Core/system"
+	"github.com/micro-business/Micro-Business-Core/system"
 )
 
 func TestUUIDNil(t *testing.T) {
